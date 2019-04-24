@@ -1,0 +1,185 @@
+**** PROPERTIES SKAFFOLDER ****
+{
+    "forEachObj": "resource",
+    "overwrite": true,
+    "_partials": []
+}
+**** END PROPERTIES SKAFFOLDER ****
+import Properties from "../../../properties";
+import {{capitalize resource.name}}Model from "../../../models/{{capitalize db.name}}/{{capitalize resource.name}}Model";
+import ErrorManager from "../../../classes/ErrorManager";
+import { authorize } from "../../../security/SecurityManager";
+
+const generatedControllers = {
+  /**
+   * Init routes
+   */
+  init: router => {
+    const baseUrl = `${Properties.api}{{resource.url}}`;
+    {{#each resource._services}}
+    router.{{lowercase method}}(baseUrl + "{{#editUrlParam url}}{{/editUrlParam}}", {{#notNull _roles}}authorize({{#joinObj _roles 'name'}}{{/joinObj}}), {{/notNull}}generatedControllers.{{name}});
+    {{/each}}
+  },
+
+  {{#notNull resource._entity}}
+
+  // CRUD METHODS
+
+  {{#each resource._services}}
+    {{#equal crudAction 'list'}}
+
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      const result = await {{capitalize ../resource.name}}Model.{{name}}();
+      res.json(result);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+  
+    {{/equal}}
+    {{#equal crudAction 'get'}}
+
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      const result = await {{capitalize ../resource.name}}Model.{{name}}(req.params.id);
+      res.json(result);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+    {{/equal}}
+    {{#equal crudAction 'update'}}
+
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      const result = await {{capitalize ../resource.name}}Model.{{name}}(req.body);
+      res.json(result);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+    {{/equal}}
+    {{#equal crudAction 'delete'}}
+
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      const result = await {{capitalize ../resource.name}}Model.{{name}}(req.params.id);
+      res.json(result);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+    {{/equal}}
+    {{#equal crudAction 'create'}}
+
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      const result = await {{capitalize ../resource.name}}Model.{{name}}(req.body);
+      res.json(result);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+    {{/equal}}
+    {{#startWith crudAction 'findBy'}}
+
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      const result = await {{capitalize ../resource.name}}Model.{{name}}(req.params.key);
+      res.json(result);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+    {{/startWith}}
+    {{#startWith crudAction 'get'}}
+
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      const result = await {{capitalize ../resource.name}}Model.{{name}}(req.params.id);
+      res.json(result);
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+    {{/startWith}}
+  {{/each}}{{/notNull}}
+  
+  // Custom APIs
+{{#each resource._services}}{{#equal crudAction null}}
+  /**
+  * {{../resource.name}}Model.{{name}}{{#notEmpty description}}
+  *   @description {{description}}{{/notEmpty}}{{#each _params}}
+  *   @param {{type}} {{name}}{{#notEmpty description}} {{description}}{{/notEmpty}}{{/each}}{{#notEmpty returnType}}
+  *   @returns {{returnType}}{{/notEmpty}}
+  *
+  */
+  {{name}}: async (req, res) => {
+    try {
+      res.json({});
+    } catch (err) {
+      const safeErr = ErrorManager.getSafeError(err);
+      res.status(safeErr.status).json(safeErr);
+    }
+  },
+{{/equal}}{{/each}}
+};
+
+export default generatedControllers;

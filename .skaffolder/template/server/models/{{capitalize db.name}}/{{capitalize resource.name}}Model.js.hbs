@@ -1,0 +1,15 @@
+**** PROPERTIES SKAFFOLDER ****
+{
+    "forEachObj": "resource",
+    "overwrite": false,
+    "_partials": []
+}
+**** END PROPERTIES SKAFFOLDER ****
+import {{capitalize resource.name}}ModelGenerated from "./generated/{{capitalize resource.name}}ModelGenerated";
+
+const customModel = {};
+
+export default {
+  ...{{capitalize resource.name}}ModelGenerated,
+  customModel
+};
